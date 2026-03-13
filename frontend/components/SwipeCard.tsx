@@ -147,7 +147,7 @@ export default function SwipeCard({
       {/* Profile info */}
       <div className="p-5 flex flex-col gap-2">
         <div className="flex items-baseline gap-2">
-          <h2 className="text-2xl font-bold text-white">{profile.name}</h2>
+          <h2 className="text-2xl font-bold text-gray-900">{profile.name}</h2>
           <span className="text-lg text-gray-400">{profile.age}</span>
         </div>
         <p className="text-sm text-gray-400 line-clamp-2 leading-relaxed">{profile.bio}</p>
@@ -157,7 +157,7 @@ export default function SwipeCard({
           {profile.interests.slice(0, 5).map((interest) => (
             <span
               key={interest}
-              className="px-2.5 py-0.5 rounded-full bg-violet-600/30 border border-violet-500/40 text-violet-300 text-xs font-medium"
+              className="px-2.5 py-0.5 rounded-full bg-rose-500/30 border border-rose-500/40 text-violet-300 text-xs font-medium"
             >
               {interest}
             </span>
@@ -183,16 +183,18 @@ export default function SwipeCard({
         <button
           onClick={() => settle(false)}
           disabled={txPending || !!swipeResult}
-          className="w-14 h-14 rounded-full bg-gray-900 border-2 border-rose-500/60 flex items-center justify-center text-rose-400 text-xl hover:bg-rose-500/10 hover:scale-110 transition-all disabled:opacity-40"
+          className="w-14 h-14 rounded-full bg-white border-2 border-rose-500/60 flex items-center justify-center text-rose-400 text-xl hover:bg-rose-500/10 hover:scale-110 transition-all disabled:opacity-40"
           title="Nope"
         >✕</button>
         <button
           onClick={() => settle(true)}
           disabled={txPending || !!swipeResult}
-          className="w-14 h-14 rounded-full bg-gray-900 border-2 border-emerald-500/60 flex items-center justify-center text-emerald-400 text-xl hover:bg-emerald-500/10 hover:scale-110 transition-all disabled:opacity-40"
+          className="w-14 h-14 rounded-full bg-white border-2 border-emerald-500/60 flex items-center justify-center text-emerald-400 text-xl hover:bg-emerald-500/10 hover:scale-110 transition-all disabled:opacity-40"
           title="Like"
         >♥</button>
       </div>
     </div>
   );
 }
+
+

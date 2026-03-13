@@ -48,9 +48,9 @@ export default function ContentUnlock({
         {previewUrl && (
           <img src={previewUrl} alt="" className="w-full h-44 object-cover blur-md scale-105 group-hover:blur-sm transition-all duration-500" />
         )}
-        <div className="absolute inset-0 bg-gray-950/80 flex flex-col items-center justify-center gap-2 p-4">
+        <div className="absolute inset-0 bg-[var(--bg-color)]/80 flex flex-col items-center justify-center gap-2 p-4">
           <div className="w-10 h-10 rounded-full bg-fuchsia-600/20 border border-fuchsia-500/40 flex items-center justify-center text-xl">🔒</div>
-          <p className="text-white font-semibold text-sm text-center">{contentName}</p>
+          <p className="text-gray-900 font-semibold text-sm text-center">{contentName}</p>
           <p className="text-fuchsia-300 text-xs">{priceEth} HELA to unlock</p>
         </div>
       </div>
@@ -59,20 +59,20 @@ export default function ContentUnlock({
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setIsOpen(false)} />
-          <div className="relative z-10 w-full max-w-sm bg-gray-900 border border-gray-700 rounded-3xl p-6 flex flex-col gap-4 shadow-2xl shadow-black">
+          <div className="relative z-10 w-full max-w-sm bg-white border border-gray-300 rounded-3xl p-6 flex flex-col gap-4 shadow-2xl shadow-black">
             <button onClick={() => setIsOpen(false)} className="absolute top-4 right-4 text-gray-500 hover:text-gray-300 text-xl">✕</button>
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-2xl bg-fuchsia-600/20 border border-fuchsia-500/30 flex items-center justify-center text-2xl">🔒</div>
               <div>
-                <h3 className="text-lg font-bold text-white">{contentName}</h3>
+                <h3 className="text-lg font-bold text-gray-900">{contentName}</h3>
                 <p className="text-xs text-gray-500 font-mono">{creator.slice(0,8)}…{creator.slice(-6)}</p>
               </div>
             </div>
 
-            <div className="bg-gray-800/50 rounded-2xl p-4 flex flex-col gap-1.5">
+            <div className="bg-white/60/50 rounded-2xl p-4 flex flex-col gap-1.5">
               <div className="flex justify-between text-sm">
                 <span className="text-gray-400">Unlock price</span>
-                <span className="text-white font-semibold">{priceEth} HELA</span>
+                <span className="text-gray-900 font-semibold">{priceEth} HELA</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-gray-400">Protocol fee</span>
@@ -99,7 +99,7 @@ export default function ContentUnlock({
               <button
                 onClick={handleUnlock}
                 disabled={status === "pending" || !signer}
-                className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-fuchsia-600 to-violet-600 text-white font-bold text-sm tracking-wide hover:from-fuchsia-500 hover:to-violet-500 transition-all hover:shadow-lg hover:shadow-fuchsia-500/20 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
+                className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-rose-500 to-rose-400 text-gray-900 font-bold text-sm tracking-wide hover:from-rose-400 hover:to-rose-300 transition-all hover:shadow-lg hover:shadow-rose-500/20 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {status === "pending" ? (
                   <span className="flex items-center justify-center gap-2">
@@ -118,3 +118,5 @@ export default function ContentUnlock({
     </>
   );
 }
+
+

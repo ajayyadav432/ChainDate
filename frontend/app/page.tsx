@@ -27,7 +27,7 @@ export default function LandingPage() {
         <div className="flex items-center gap-2">
           <span className="text-2xl">💜</span>
           <span className="font-black text-xl tracking-tight gradient-text">Sangam</span>
-          <span className="ml-2 text-[10px] font-semibold bg-violet-600/20 border border-violet-500/30 text-violet-300 px-2 py-0.5 rounded-full">Hela Network</span>
+          <span className="ml-2 text-[10px] font-semibold bg-rose-500/20 border border-rose-500/30 text-violet-300 px-2 py-0.5 rounded-full">Hela Network</span>
         </div>
         <WalletConnect onConnected={handleConnected} />
       </nav>
@@ -38,14 +38,14 @@ export default function LandingPage() {
         <div className="relative w-64 h-64 mb-12 float-card">
           <div className="absolute top-8 left-4 w-44 h-60 rounded-3xl bg-gradient-to-br from-violet-900 to-violet-950 border border-violet-700/30 shadow-xl rotate-[-8deg] opacity-40" />
           <div className="absolute top-4 left-8 w-44 h-60 rounded-3xl bg-gradient-to-br from-fuchsia-900 to-fuchsia-950 border border-fuchsia-700/30 shadow-xl rotate-[-3deg] opacity-60" />
-          <div className="absolute top-0 left-12 w-44 h-60 rounded-3xl bg-gradient-to-br from-gray-900 to-gray-950 border border-violet-500/20 shadow-2xl shadow-violet-900/40 flex flex-col items-center justify-center gap-3 p-4">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-violet-600 to-fuchsia-600 flex items-center justify-center text-2xl shadow-lg shadow-violet-500/40">💜</div>
+          <div className="absolute top-0 left-12 w-44 h-60 rounded-3xl bg-gradient-to-br from-gray-900 to-gray-950 border border-rose-500/20 shadow-2xl shadow-violet-900/40 flex flex-col items-center justify-center gap-3 p-4">
+            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-rose-500 to-rose-400 flex items-center justify-center text-2xl shadow-lg shadow-rose-500/40">💜</div>
             <div className="text-center">
-              <p className="text-sm font-bold text-white">0x4A3…f9B2</p>
+              <p className="text-sm font-bold text-gray-900">0x4A3…f9B2</p>
               <p className="text-xs text-gray-600 mt-0.5">Age: ≥18 (ZK Proven)</p>
               <div className="flex flex-wrap justify-center gap-1 mt-2">
-                <span className="text-[10px] bg-violet-600/20 border border-violet-500/30 text-violet-300 px-2 py-0.5 rounded-full">🎵 Music</span>
-                <span className="text-[10px] bg-violet-600/20 border border-violet-500/30 text-violet-300 px-2 py-0.5 rounded-full">✈️ Travel</span>
+                <span className="text-[10px] bg-rose-500/20 border border-rose-500/30 text-violet-300 px-2 py-0.5 rounded-full">🎵 Music</span>
+                <span className="text-[10px] bg-rose-500/20 border border-rose-500/30 text-violet-300 px-2 py-0.5 rounded-full">✈️ Travel</span>
               </div>
             </div>
             <div className="flex gap-3">
@@ -58,7 +58,7 @@ export default function LandingPage() {
         <h1 className="text-5xl md:text-6xl font-black leading-tight mb-4">
           <span className="gradient-text">Love, Onchain.</span>
           <br />
-          <span className="text-white">Privacy, Always.</span>
+          <span className="text-gray-900">Privacy, Always.</span>
         </h1>
         <p className="text-gray-600 text-lg max-w-xl leading-relaxed mb-10">
           The world&apos;s first ZK-private dating dApp on <span className="text-rose-500 font-semibold">Hela Network</span>. 
@@ -70,13 +70,13 @@ export default function LandingPage() {
             <>
               <Link
                 href="/register"
-                className="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-bold text-sm hover:from-violet-500 hover:to-fuchsia-500 hover:shadow-lg hover:shadow-violet-500/30 transition-all active:scale-95"
+                className="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-rose-500 to-rose-400 text-gray-900 font-bold text-sm hover:from-rose-400 hover:to-rose-300 hover:shadow-lg hover:shadow-rose-500/30 transition-all active:scale-95"
               >
                 Create Profile →
               </Link>
               <Link
                 href="/swipe"
-                className="px-8 py-3.5 rounded-2xl glass border border-violet-500/30 text-violet-300 font-bold text-sm hover:bg-violet-500/10 hover:border-violet-400/50 transition-all"
+                className="px-8 py-3.5 rounded-2xl glass border border-rose-500/30 text-violet-300 font-bold text-sm hover:bg-violet-500/10 hover:border-violet-400/50 transition-all"
               >
                 Start Swiping ♥
               </Link>
@@ -89,13 +89,13 @@ export default function LandingPage() {
 
       {/* Features */}
       <section className="px-6 py-16 max-w-4xl mx-auto w-full">
-        <h2 className="text-2xl font-bold text-center text-white mb-10">Built Different</h2>
+        <h2 className="text-2xl font-bold text-center text-gray-900 mb-10">Built Different</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {features.map(f => (
-            <div key={f.title} className="glass rounded-2xl p-5 flex gap-4 hover:border-violet-500/30 transition border border-white/5">
+            <div key={f.title} className="glass rounded-2xl p-5 flex gap-4 hover:border-rose-500/30 transition border border-white/5">
               <span className="text-3xl shrink-0">{f.icon}</span>
               <div>
-                <h3 className="font-bold text-white text-sm mb-1">{f.title}</h3>
+                <h3 className="font-bold text-gray-900 text-sm mb-1">{f.title}</h3>
                 <p className="text-gray-600 text-xs leading-relaxed">{f.desc}</p>
               </div>
             </div>
@@ -113,5 +113,7 @@ export default function LandingPage() {
     </main>
   );
 }
+
+
 
 

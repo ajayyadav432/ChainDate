@@ -84,7 +84,7 @@ export default function ProfileForm({ signer, address, onRegistered }: ProfileFo
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5 w-full max-w-md mx-auto">
-      <h2 className="text-2xl font-bold text-white">Create Your Profile</h2>
+      <h2 className="text-2xl font-bold text-gray-900">Create Your Profile</h2>
       <p className="text-sm text-gray-400">Your name and bio are encrypted client-side before being hashed on-chain.</p>
 
       <div className="flex flex-col gap-1.5">
@@ -92,7 +92,7 @@ export default function ProfileForm({ signer, address, onRegistered }: ProfileFo
         <input
           type="text" value={name} onChange={e => setName(e.target.value)}
           placeholder="Anonymous Dragon" maxLength={40}
-          className="bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-violet-500 transition"
+          className="bg-white border border-gray-300 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-600 focus:outline-none focus:border-rose-500 transition"
         />
       </div>
 
@@ -101,7 +101,7 @@ export default function ProfileForm({ signer, address, onRegistered }: ProfileFo
         <textarea
           value={bio} onChange={e => setBio(e.target.value)}
           placeholder="Tell the chain your vibe…" maxLength={160} rows={3}
-          className="bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-violet-500 transition resize-none"
+          className="bg-white border border-gray-300 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-600 focus:outline-none focus:border-rose-500 transition resize-none"
         />
       </div>
 
@@ -110,7 +110,7 @@ export default function ProfileForm({ signer, address, onRegistered }: ProfileFo
         <input
           type="number" value={age} onChange={e => setAge(Number(e.target.value))}
           min={18} max={99}
-          className="bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-violet-500 transition w-28"
+          className="bg-white border border-gray-300 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:border-rose-500 transition w-28"
         />
         <span className="text-[10px] text-gray-600">Proven ≥18 via ZK proof — never stored plaintext</span>
       </div>
@@ -125,8 +125,8 @@ export default function ProfileForm({ signer, address, onRegistered }: ProfileFo
               key={opt.id} type="button" onClick={() => toggleInterest(opt.id)}
               className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-all ${
                 selectedInterests.includes(opt.id)
-                  ? "bg-violet-600 border-violet-500 text-white shadow-md shadow-violet-500/20"
-                  : "bg-gray-900 border-gray-700 text-gray-400 hover:border-violet-500/50 hover:text-gray-300"
+                  ? "bg-rose-500 border-rose-500 text-gray-900 shadow-md shadow-rose-500/20"
+                  : "bg-white border-gray-300 text-gray-400 hover:border-rose-500/50 hover:text-gray-300"
               }`}
             >
               {opt.label}
@@ -139,7 +139,7 @@ export default function ProfileForm({ signer, address, onRegistered }: ProfileFo
 
       <button
         type="submit" disabled={loading}
-        className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-bold text-sm tracking-wide hover:from-violet-500 hover:to-fuchsia-500 hover:shadow-lg hover:shadow-violet-500/30 transition-all active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
+        className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-rose-500 to-rose-400 text-gray-900 font-bold text-sm tracking-wide hover:from-rose-400 hover:to-rose-300 hover:shadow-lg hover:shadow-rose-500/30 transition-all active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
       >
         {loading ? (
           <span className="flex items-center justify-center gap-2">
@@ -154,3 +154,5 @@ export default function ProfileForm({ signer, address, onRegistered }: ProfileFo
     </form>
   );
 }
+
+

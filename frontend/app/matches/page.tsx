@@ -93,7 +93,7 @@ export default function MatchesPage() {
         {/* Matches sidebar */}
         <aside className={`${activeChat ? "hidden md:flex" : "flex"} flex-col w-full md:w-80 border-r border-white/5 glass overflow-y-auto`}>
           <div className="p-5 border-b border-white/5">
-            <h1 className="text-xl font-bold text-white">Your Matches</h1>
+            <h1 className="text-xl font-bold text-gray-900">Your Matches</h1>
             <p className="text-xs text-gray-500 mt-0.5">On-chain verified · ZK proven</p>
           </div>
           <div className="flex flex-col gap-2 p-4">
@@ -109,7 +109,7 @@ export default function MatchesPage() {
 
           {/* Exclusive content section */}
           <div className="p-5 border-t border-white/5">
-            <h2 className="text-sm font-bold text-white mb-3 flex items-center gap-2">
+            <h2 className="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
               🔒 Exclusive Content
               <span className="text-[10px] text-gray-500 font-normal">Pay to unlock · Escrow secured</span>
             </h2>
@@ -131,10 +131,10 @@ export default function MatchesPage() {
           <div className="flex flex-col flex-1 overflow-hidden">
             {/* Chat header */}
             <div className="px-5 py-4 glass border-b border-white/5 flex items-center gap-3">
-              <button onClick={() => setActiveChat(null)} className="md:hidden text-gray-600 hover:text-white mr-1">←</button>
+              <button onClick={() => setActiveChat(null)} className="md:hidden text-gray-600 hover:text-gray-900 mr-1">←</button>
               <img src={activeChat.photoUrl} alt="" className="w-10 h-10 rounded-xl object-cover" />
               <div>
-                <p className="font-semibold text-white text-sm">{activeChat.name}</p>
+                <p className="font-semibold text-gray-900 text-sm">{activeChat.name}</p>
                 <p className="text-[10px] text-gray-500 font-mono">{activeChat.address.slice(0, 10)}…{activeChat.address.slice(-6)}</p>
               </div>
               <div className="ml-auto flex items-center gap-1.5 text-xs text-emerald-400">
@@ -146,14 +146,14 @@ export default function MatchesPage() {
             {/* Messages */}
             <div className="flex-1 overflow-y-auto p-5 flex flex-col gap-3">
               <div className="flex justify-center">
-                <span className="text-[10px] text-gray-600 bg-gray-900/60 px-3 py-1 rounded-full">ZK-verified match · E2E encrypted chat</span>
+                <span className="text-[10px] text-gray-600 bg-white/60 px-3 py-1 rounded-full">ZK-verified match · E2E encrypted chat</span>
               </div>
               {messages.map((msg, i) => (
                 <div key={i} className={`flex ${msg.from === "me" ? "justify-end" : "justify-start"}`}>
                   <div
                     className={`max-w-xs px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${
                       msg.from === "me"
-                        ? "bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white rounded-br-md"
+                        ? "bg-gradient-to-r from-rose-500 to-rose-400 text-gray-900 rounded-br-md"
                         : "glass border border-rose-200 text-gray-200 rounded-bl-md"
                     }`}
                   >
@@ -175,13 +175,13 @@ export default function MatchesPage() {
                 onChange={e => setMsgInput(e.target.value)}
                 onKeyDown={e => e.key === "Enter" && !e.shiftKey && handleSendMessage()}
                 placeholder="Write a message…"
-                className="flex-1 bg-gray-900 border border-gray-700 rounded-2xl px-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-violet-500 transition"
+                className="flex-1 bg-white border border-gray-300 rounded-2xl px-4 py-3 text-sm text-gray-900 placeholder-gray-600 focus:outline-none focus:border-rose-500 transition"
                 disabled={txPending}
               />
               <button
                 onClick={handleSendMessage}
                 disabled={!msgInput.trim() || txPending}
-                className="px-5 py-3 rounded-2xl bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-bold text-sm hover:from-violet-500 hover:to-fuchsia-500 transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-5 py-3 rounded-2xl bg-gradient-to-r from-rose-500 to-rose-400 text-gray-900 font-bold text-sm hover:from-rose-400 hover:to-rose-300 transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {txPending ? (
                   <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
@@ -195,7 +195,7 @@ export default function MatchesPage() {
         ) : (
           <div className="hidden md:flex flex-1 items-center justify-center flex-col gap-3 text-center">
             <div className="text-5xl">💬</div>
-            <p className="text-lg font-semibold text-white">Select a match to chat</p>
+            <p className="text-lg font-semibold text-gray-900">Select a match to chat</p>
             <p className="text-gray-500 text-sm max-w-xs">Each message is a micro-transaction on Hela Network. Privacy-first E2E encrypted.</p>
           </div>
         )}
@@ -203,5 +203,7 @@ export default function MatchesPage() {
     </main>
   );
 }
+
+
 
 

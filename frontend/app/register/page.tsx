@@ -31,7 +31,7 @@ export default function RegisterPage() {
       </nav>
 
       <div className="flex-1 flex items-center justify-center px-4 py-12">
-        <div className="w-full max-w-md glass rounded-3xl p-8 border border-violet-500/10 shadow-2xl shadow-violet-900/20">
+        <div className="w-full max-w-md glass rounded-3xl p-8 border border-rose-500/10 shadow-2xl shadow-violet-900/20">
           {!address ? (
             <div className="flex flex-col items-center gap-6 text-center py-8">
               <div className="text-5xl">🔐</div>
@@ -53,5 +53,7 @@ export default function RegisterPage() {
     </main>
   );
 }
+
+
 
 

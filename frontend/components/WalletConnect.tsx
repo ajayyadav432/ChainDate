@@ -51,7 +51,7 @@ export default function WalletConnect({ onConnected }: WalletConnectProps) {
       <button
         onClick={connect}
         disabled={loading}
-        className="group relative px-8 py-3.5 rounded-2xl bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-semibold text-sm tracking-wide overflow-hidden transition-all hover:scale-105 hover:shadow-lg hover:shadow-violet-500/30 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
+        className="group relative px-8 py-3.5 rounded-2xl bg-gradient-to-r from-rose-500 to-rose-400 text-gray-900 font-semibold text-sm tracking-wide overflow-hidden transition-all hover:scale-105 hover:shadow-lg hover:shadow-rose-500/30 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
       >
         <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
         {loading ? (
@@ -75,3 +75,5 @@ export default function WalletConnect({ onConnected }: WalletConnectProps) {
     </div>
   );
 }
+
+

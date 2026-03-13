@@ -101,7 +101,7 @@ export default function SwipePage() {
         <div className="flex items-center gap-3">
           <Link href="/matches" className="text-sm text-violet-300 hover:text-violet-200 transition">
             Matches {matches.length > 0 && (
-              <span className="ml-1 bg-violet-600 text-gray-900 text-xs px-1.5 py-0.5 rounded-full">{matches.length}</span>
+              <span className="ml-1 bg-rose-500 text-gray-900 text-xs px-1.5 py-0.5 rounded-full">{matches.length}</span>
             )}
           </Link>
           <WalletConnect onConnected={handleConnected} />
@@ -124,7 +124,7 @@ export default function SwipePage() {
             <p className="text-gray-600 text-sm">New profiles are indexed from the blockchain daily. Check your matches!</p>
             <Link
               href="/matches"
-              className="mt-2 px-8 py-3 rounded-2xl bg-gradient-to-r from-violet-600 to-fuchsia-600 text-gray-900 font-bold text-sm hover:shadow-lg hover:shadow-violet-500/30 transition-all"
+              className="mt-2 px-8 py-3 rounded-2xl bg-gradient-to-r from-rose-500 to-rose-400 text-gray-900 font-bold text-sm hover:shadow-lg hover:shadow-rose-500/30 transition-all"
             >
               View Matches →
             </Link>
@@ -174,11 +174,11 @@ export default function SwipePage() {
             </div>
             <div className="flex -space-x-3">
               <img src={showMatch.photoUrl} alt="" className="w-14 h-14 rounded-full border-2 border-fuchsia-500 object-cover" />
-              <div className="w-14 h-14 rounded-full border-2 border-violet-500 bg-gradient-to-br from-violet-600 to-fuchsia-600 flex items-center justify-center text-xl z-10">💜</div>
+              <div className="w-14 h-14 rounded-full border-2 border-rose-500 bg-gradient-to-br from-rose-500 to-rose-400 flex items-center justify-center text-xl z-10">💜</div>
             </div>
             <Link
               href="/matches"
-              className="px-6 py-2.5 rounded-2xl bg-gradient-to-r from-violet-600 to-fuchsia-600 text-gray-900 font-bold text-sm hover:shadow-lg hover:shadow-violet-500/30 transition-all"
+              className="px-6 py-2.5 rounded-2xl bg-gradient-to-r from-rose-500 to-rose-400 text-gray-900 font-bold text-sm hover:shadow-lg hover:shadow-rose-500/30 transition-all"
             >
               Send a Message →
             </Link>
@@ -188,5 +188,7 @@ export default function SwipePage() {
     </main>
   );
 }
+
+
 
 

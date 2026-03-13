@@ -13,7 +13,7 @@ export default function MatchCard({ address, name, photoUrl, lastMessage, onClic
   return (
     <button
       onClick={onClick}
-      className="flex items-center gap-4 w-full p-4 rounded-2xl bg-gray-900/80 border border-gray-800 hover:border-violet-500/40 hover:bg-gray-800/60 transition-all group"
+      className="flex items-center gap-4 w-full p-4 rounded-2xl bg-white/80 border border-gray-300 hover:border-rose-500/40 hover:bg-white/60/60 transition-all group"
     >
       {/* Avatar */}
       <div className="relative w-14 h-14 rounded-2xl overflow-hidden shrink-0">
@@ -33,4 +33,6 @@ export default function MatchCard({ address, name, photoUrl, lastMessage, onClic
     </button>
   );
 }
+
+
 
