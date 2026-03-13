@@ -16,7 +16,7 @@ export const DEPLOYED_ADDRESSES = {
 
 // ── Hela Network configuration ────────────────────────────────────────────────
 export const HELA_TESTNET = {
-  chainId: "0xa2c48", // 666888 hex
+  chainId: "0xa2d08", // 666888 hex
   chainName: "Hela Testnet",
   nativeCurrency: { name: "HELA", symbol: "HELA", decimals: 18 },
   rpcUrls: ["https://testnet-rpc.helachain.com"],
@@ -62,15 +62,16 @@ export function getEscrowContract(signerOrProvider: ethers.Signer | ethers.Provi
 
 /** Switch MetaMask to Hela Testnet */
 export async function switchToHelaNetwork() {
-  if (!window.ethereum) throw new Error("No wallet found");
+  const eth = (window as any).ethereum;
+  if (!eth) throw new Error("No wallet found");
   try {
-    await window.ethereum.request({
+    await eth.request({
       method: "wallet_switchEthereumChain",
       params: [{ chainId: HELA_TESTNET.chainId }],
     });
   } catch (err: any) {
     if (err.code === 4902) {
-      await window.ethereum.request({
+      await eth.request({
         method: "wallet_addEthereumChain",
         params: [HELA_TESTNET],
       });
