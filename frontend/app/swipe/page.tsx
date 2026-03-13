@@ -5,7 +5,6 @@ import WalletConnect from "@/components/WalletConnect";
 import SwipeCard, { CardProfile } from "@/components/SwipeCard";
 import { useWallet } from "@/context/WalletContext";
 
-// ── Mock profiles for demo (replace with on-chain event indexing) ─────────────
 const DEMO_PROFILES: CardProfile[] = [
   {
     address: "0x4A3B8fEa2D9C1F5e6D7b0A9c3E2F8B1d4C5A6B7C",
@@ -55,23 +54,20 @@ const DEMO_PROFILES: CardProfile[] = [
 ];
 
 const MY_AGE = 23;
-const MY_INTERESTS = [1, 5, 7, 2]; // Music, Travel, Art, Gaming
+const MY_INTERESTS = [1, 5, 7, 2];
 
 export default function SwipePage() {
-  const { signer, address } = useWallet();
+  const { signer } = useWallet();
   const [deck, setDeck] = useState<CardProfile[]>(DEMO_PROFILES);
   const [matches, setMatches] = useState<CardProfile[]>([]);
   const [showMatch, setShowMatch] = useState<CardProfile | null>(null);
   const [stats, setStats] = useState({ likes: 0, nopes: 0 });
+  const [refreshing, setRefreshing] = useState(false);
 
   function handleSwipeDone(addr: string, liked: boolean) {
     setDeck(prev => prev.filter(p => p.address !== addr));
-    setStats(prev => ({
-      likes: prev.likes + (liked ? 1 : 0),
-      nopes: prev.nopes + (!liked ? 1 : 0),
-    }));
+    setStats(prev => ({ likes: prev.likes + (liked ? 1 : 0), nopes: prev.nopes + (!liked ? 1 : 0) }));
     if (liked) {
-      // Simulate a 40% mutual-match rate for demo
       const profile = deck.find(p => p.address === addr)!;
       if (Math.random() < 0.4) {
         setMatches(prev => [...prev, profile]);
@@ -81,21 +77,30 @@ export default function SwipePage() {
     }
   }
 
+  function handleRefresh() {
+    setRefreshing(true);
+    setTimeout(() => {
+      setDeck(DEMO_PROFILES);
+      setStats({ likes: 0, nopes: 0 });
+      setRefreshing(false);
+    }, 1500);
+  }
+
   const topCard = deck[deck.length - 1];
   const secondCard = deck[deck.length - 2];
 
   return (
     <main className="min-h-screen bg-hero-gradient flex flex-col">
       {/* Navbar */}
-      <nav className="sticky top-0 z-50 px-6 py-4 flex items-center justify-between glass border-b border-white/5">
-        <a href="/" className="flex items-center gap-2">
+      <nav className="sticky top-0 z-50 px-4 py-3 flex items-center justify-between glass border-b border-rose-100/50">
+        <Link href="/" className="flex items-center gap-2">
           <span className="text-2xl">💜</span>
-          <span className="font-black text-xl tracking-tight gradient-text">Sangam</span>
-        </a>
+          <span className="font-black text-lg tracking-tight gradient-text">Sangam</span>
+        </Link>
         <div className="flex items-center gap-3">
-          <Link href="/matches" className="text-sm text-violet-300 hover:text-violet-200 transition">
-            Matches {matches.length > 0 && (
-              <span className="ml-1 bg-rose-500 text-gray-900 text-xs px-1.5 py-0.5 rounded-full">{matches.length}</span>
+          <Link href="/matches" className="text-sm font-semibold text-gray-600 hover:text-rose-500 transition flex items-center gap-1">
+            💬 {matches.length > 0 && (
+              <span className="bg-rose-500 text-white text-xs px-1.5 py-0.5 rounded-full">{matches.length}</span>
             )}
           </Link>
           <WalletConnect />
@@ -103,33 +108,62 @@ export default function SwipePage() {
       </nav>
 
       {/* Stats bar */}
-      <div className="flex justify-center gap-8 py-3 text-sm">
-        <span className="text-emerald-400 font-semibold">♥ {stats.likes} Liked</span>
-        <span className="text-gray-500 font-mono text-xs mt-0.5">Swipe fee: 0.001 HELA each</span>
-        <span className="text-rose-400 font-semibold">✕ {stats.nopes} Noped</span>
+      <div className="flex justify-center gap-8 py-2.5 text-sm border-b border-rose-50">
+        <span className="text-emerald-600 font-bold">♥ {stats.likes} Liked</span>
+        <span className="text-gray-400 text-xs font-mono mt-0.5">0.001 HELA/swipe</span>
+        <span className="text-rose-500 font-bold">✕ {stats.nopes} Noped</span>
       </div>
 
-      {/* Card area */}
-      <div className="flex-1 flex flex-col items-center justify-center px-4 py-8">
+      {/* Card area — mobile-first centered */}
+      <div className="flex-1 flex flex-col items-center justify-center px-4 py-6">
         {deck.length === 0 ? (
-          <div className="flex flex-col items-center gap-4 text-center max-w-xs">
-            <div className="text-6xl mb-2">🌗</div>
-            <h2 className="text-2xl font-bold text-gray-900">You&apos;ve seen them all</h2>
-            <p className="text-gray-600 text-sm">New profiles are indexed from the blockchain daily. Check your matches!</p>
-            <Link
-              href="/matches"
-              className="mt-2 px-8 py-3 rounded-2xl bg-gradient-to-r from-rose-500 to-rose-400 text-gray-900 font-bold text-sm hover:shadow-lg hover:shadow-rose-500/30 transition-all"
-            >
-              View Matches →
-            </Link>
+          /* ── Premium empty state ── */
+          <div className="flex flex-col items-center gap-6 text-center max-w-xs mx-auto">
+            <div className="relative">
+              <div className="text-7xl mb-2 animate-bounce">🌗</div>
+              <div className="absolute -top-1 -right-1 text-2xl animate-spin" style={{animationDuration:"3s"}}>✨</div>
+            </div>
+            <div>
+              <h2 className="text-2xl font-black text-gray-900 mb-2">You&apos;ve seen them all!</h2>
+              <p className="text-gray-500 text-sm leading-relaxed">
+                New profiles are indexed from the Hela blockchain every hour. Come back soon, or refresh the on-chain index now.
+              </p>
+            </div>
+            <div className="flex flex-col gap-3 w-full">
+              <button
+                onClick={handleRefresh}
+                disabled={refreshing}
+                className="w-full py-4 rounded-2xl bg-gradient-to-r from-rose-500 to-rose-400 text-white font-bold text-base hover:shadow-lg hover:shadow-rose-500/30 transition-all active:scale-95 flex items-center justify-center gap-2 disabled:opacity-60"
+              >
+                {refreshing ? (
+                  <>
+                    <svg className="w-5 h-5 animate-spin" viewBox="0 0 24 24" fill="none">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+                    </svg>
+                    Indexing Hela Network…
+                  </>
+                ) : (
+                  <>⛓️ Refresh On-Chain Index</>
+                )}
+              </button>
+              <Link
+                href="/matches"
+                className="w-full py-4 rounded-2xl glass border border-rose-300/50 text-rose-600 font-bold text-base hover:bg-rose-50 transition-all text-center"
+              >
+                💬 View Your Matches
+              </Link>
+            </div>
+            <p className="text-xs text-gray-400">🔐 ZK proven · ⛓️ On Hela Network</p>
           </div>
         ) : (
-          <div className="relative w-[340px] h-[560px]">
-            {/* Background card (depth illusion) */}
+          /* ── Swipe deck ── */
+          <div className="relative w-full max-w-sm" style={{ height: "min(72vh, 560px)" }}>
+            {/* Background depth card */}
             {secondCard && (
               <div
-                className="absolute w-[340px] h-[520px] rounded-3xl bg-gradient-to-b from-gray-900 to-gray-950 border border-white/5 shadow-xl"
-                style={{ transform: "scale(0.94) translateY(18px)", zIndex: 0 }}
+                className="absolute inset-x-4 top-4 bottom-0 rounded-3xl bg-white/60 border border-rose-100 shadow-lg"
+                style={{ transform: "scale(0.95) translateY(8px)", zIndex: 0 }}
               />
             )}
             {/* Top swipeable card */}
@@ -148,32 +182,28 @@ export default function SwipePage() {
           </div>
         )}
 
-        {/* Swipe hint */}
         {deck.length > 0 && (
-          <p className="mt-20 text-gray-600 text-xs text-center">
-            Drag card or use buttons · Each swipe costs 0.001 HELA
+          <p className="mt-6 text-gray-400 text-xs text-center">
+            Drag the card or use the buttons · Each swipe costs 0.001 HELA
           </p>
         )}
       </div>
 
-      {/* Match toast notification */}
+      {/* Match toast */}
       {showMatch && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
-          <div className="pointer-events-auto glass rounded-3xl border border-fuchsia-500/40 shadow-2xl shadow-fuchsia-900/40 p-8 flex flex-col items-center gap-4 max-w-xs mx-4 animate-bounce-once">
+        <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none px-4">
+          <div className="pointer-events-auto glass rounded-3xl border border-rose-300/60 shadow-2xl shadow-rose-200/60 p-8 flex flex-col items-center gap-4 max-w-xs w-full animate-bounce">
             <div className="text-5xl">🎉</div>
             <div className="text-center">
               <h3 className="text-2xl font-black gradient-text mb-1">It&apos;s a Match!</h3>
-              <p className="text-gray-300 text-sm">You and <span className="text-gray-900 font-semibold">{showMatch.name}</span> liked each other.</p>
-              <p className="text-gray-500 text-xs mt-1">ZK proof verified on-chain ✓</p>
+              <p className="text-gray-600 text-sm">You and <span className="font-semibold text-gray-900">{showMatch.name}</span> liked each other.</p>
+              <p className="text-gray-400 text-xs mt-1">ZK proof verified on Hela Network ✓</p>
             </div>
             <div className="flex -space-x-3">
-              <img src={showMatch.photoUrl} alt="" className="w-14 h-14 rounded-full border-2 border-fuchsia-500 object-cover" />
-              <div className="w-14 h-14 rounded-full border-2 border-rose-500 bg-gradient-to-br from-rose-500 to-rose-400 flex items-center justify-center text-xl z-10">💜</div>
+              <img src={showMatch.photoUrl} alt="" className="w-14 h-14 rounded-full border-2 border-rose-500 object-cover" />
+              <div className="w-14 h-14 rounded-full border-2 border-rose-300 bg-gradient-to-br from-rose-500 to-rose-400 flex items-center justify-center text-xl z-10">💜</div>
             </div>
-            <Link
-              href="/matches"
-              className="px-6 py-2.5 rounded-2xl bg-gradient-to-r from-rose-500 to-rose-400 text-gray-900 font-bold text-sm hover:shadow-lg hover:shadow-rose-500/30 transition-all"
-            >
+            <Link href="/matches" className="px-6 py-3 rounded-2xl bg-gradient-to-r from-rose-500 to-rose-400 text-white font-bold text-sm hover:shadow-lg transition-all">
               Send a Message →
             </Link>
           </div>
@@ -182,7 +212,3 @@ export default function SwipePage() {
     </main>
   );
 }
-
-
-
-

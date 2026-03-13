@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { WalletProvider } from "@/context/WalletContext";
+import { ToastProvider } from "@/context/ToastContext";
 import Footer from "@/components/Footer";
 
 const inter = Inter({
@@ -26,8 +27,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning className={inter.variable}>
       <body className="antialiased bg-[var(--bg-color)] text-gray-900 min-h-screen font-sans flex flex-col">
         <WalletProvider>
-          {children}
-          <Footer />
+          <ToastProvider>
+            {children}
+            <Footer />
+          </ToastProvider>
         </WalletProvider>
       </body>
     </html>

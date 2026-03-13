@@ -3,6 +3,7 @@ import React, { useState, useRef, useCallback } from "react";
 import { ethers } from "ethers";
 import { getDatingCoreContract } from "@/lib/contracts";
 import { generateMockProof, encodeProofForContract, validateProofLocally } from "@/lib/zk";
+import { useToast } from "@/context/ToastContext";
 
 export interface CardProfile {
   address: string;
@@ -22,16 +23,10 @@ interface SwipeCardProps {
   onSwipeDone: (address: string, liked: boolean) => void;
 }
 
-const SWIPE_THRESHOLD = 100; // px before deciding swipe direction
+const SWIPE_THRESHOLD = 80;
 const SWIPE_FEE = ethers.parseEther("0.001");
 
-export default function SwipeCard({
-  profile,
-  myInterestIds,
-  myAge,
-  signer,
-  onSwipeDone,
-}: SwipeCardProps) {
+export default function SwipeCard({ profile, myInterestIds, myAge, signer, onSwipeDone }: SwipeCardProps) {
   const [dragX, setDragX] = useState(0);
   const [dragY, setDragY] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
@@ -40,6 +35,7 @@ export default function SwipeCard({
   const startX = useRef(0);
   const startY = useRef(0);
   const cardRef = useRef<HTMLDivElement>(null);
+  const { showToast } = useToast();
 
   const rotation = dragX * 0.08;
   const likeOpacity = Math.max(0, Math.min(1, dragX / SWIPE_THRESHOLD));
@@ -67,33 +63,29 @@ export default function SwipeCard({
 
     if (signer) {
       setTxPending(true);
+      showToast("🔐 Encrypting your vibe via ZK-proof…", "pending");
       try {
-        const proof = await generateMockProof({
-          age: myAge,
-          userInterests: myInterestIds,
-          targetInterests: profile.interests_ids,
-        });
+        const proof = await generateMockProof({ age: myAge, userInterests: myInterestIds, targetInterests: profile.interests_ids });
         const validation = validateProofLocally(proof);
         if (!validation.valid) {
-          alert(`ZK Validation failed: ${validation.reason}`);
+          showToast(`ZK Validation failed: ${validation.reason}`, "error");
           setTxPending(false);
           return;
         }
         const { proofCalldata, signalsCalldata } = encodeProofForContract(proof);
         const contract = getDatingCoreContract(signer);
-        const tx = await contract.swipe(
-          profile.address, liked, proofCalldata, signalsCalldata,
-          { value: SWIPE_FEE }
-        );
+        showToast("⛓️ Confirming swipe on Hela Network…", "pending");
+        const tx = await contract.swipe(profile.address, liked, proofCalldata, signalsCalldata, { value: SWIPE_FEE });
         await tx.wait();
+        showToast(liked ? `💜 You liked ${profile.name}! Waiting for a match…` : "Swipe confirmed on-chain ✓", "success");
       } catch (err: any) {
-        console.error("Swipe tx failed:", err.message);
+        showToast(`Transaction failed: ${err.message?.slice(0, 60)}`, "error");
       } finally {
         setTxPending(false);
       }
     }
     setTimeout(() => onSwipeDone(profile.address, liked), 400);
-  }, [signer, myAge, myInterestIds, profile, onSwipeDone]);
+  }, [signer, myAge, myInterestIds, profile, onSwipeDone, showToast]);
 
   const onPointerUp = useCallback(() => {
     if (!isDragging) return;
@@ -116,85 +108,64 @@ export default function SwipeCard({
         userSelect: "none",
         touchAction: "none",
       }}
-      className="absolute w-[340px] h-[520px] rounded-3xl overflow-hidden shadow-2xl shadow-black/60 bg-gradient-to-b from-gray-900 to-gray-950 border border-white/10 select-none"
+      className="absolute inset-0 rounded-3xl overflow-hidden shadow-2xl shadow-black/30 bg-white border border-rose-100 select-none"
     >
       {/* Profile photo */}
-      <div className="relative h-72 overflow-hidden">
-        <img
-          src={profile.photoUrl}
-          alt={profile.name}
-          className="w-full h-full object-cover"
-          draggable={false}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-transparent to-transparent" />
+      <div className="relative h-[60%] overflow-hidden">
+        <img src={profile.photoUrl} alt={profile.name} className="w-full h-full object-cover" draggable={false} />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
         {/* LIKE badge */}
-        <div
-          className="absolute top-6 left-6 px-4 py-1.5 rounded-full border-2 border-emerald-400 text-emerald-400 font-black text-xl tracking-widest uppercase rotate-[-20deg]"
-          style={{ opacity: likeOpacity }}
-        >
-          LIKE
+        <div className="absolute top-5 left-5 px-4 py-1.5 rounded-full border-2 border-emerald-400 text-emerald-400 font-black text-lg uppercase rotate-[-20deg]" style={{ opacity: likeOpacity }}>
+          LIKE ♥
         </div>
         {/* NOPE badge */}
-        <div
-          className="absolute top-6 right-6 px-4 py-1.5 rounded-full border-2 border-rose-500 text-rose-500 font-black text-xl tracking-widest uppercase rotate-[20deg]"
-          style={{ opacity: nopeOpacity }}
-        >
-          NOPE
+        <div className="absolute top-5 right-5 px-4 py-1.5 rounded-full border-2 border-rose-500 text-rose-500 font-black text-lg uppercase rotate-[20deg]" style={{ opacity: nopeOpacity }}>
+          NOPE ✕
         </div>
+
+        {/* Tx pending overlay */}
+        {txPending && (
+          <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center gap-2">
+            <svg className="w-8 h-8 animate-spin text-violet-400" viewBox="0 0 24 24" fill="none">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+            </svg>
+            <p className="text-violet-300 text-xs font-semibold text-center px-4">Encrypting your vibe<br/>via ZK-proof…</p>
+          </div>
+        )}
       </div>
 
       {/* Profile info */}
-      <div className="p-5 flex flex-col gap-2">
+      <div className="p-4 flex flex-col gap-2">
         <div className="flex items-baseline gap-2">
-          <h2 className="text-2xl font-bold text-gray-900">{profile.name}</h2>
-          <span className="text-lg text-gray-400">{profile.age}</span>
+          <h2 className="text-xl font-bold text-gray-900">{profile.name}</h2>
+          <span className="text-base text-gray-500">{profile.age}</span>
+          <span className="ml-auto text-[10px] text-gray-400 font-mono">{profile.address.slice(0, 6)}…{profile.address.slice(-4)}</span>
         </div>
-        <p className="text-sm text-gray-400 line-clamp-2 leading-relaxed">{profile.bio}</p>
-
-        {/* Interests */}
+        <p className="text-sm text-gray-600 line-clamp-2 leading-relaxed">{profile.bio}</p>
         <div className="flex flex-wrap gap-1.5 mt-1">
-          {profile.interests.slice(0, 5).map((interest) => (
-            <span
-              key={interest}
-              className="px-2.5 py-0.5 rounded-full bg-rose-500/30 border border-rose-500/40 text-violet-300 text-xs font-medium"
-            >
+          {profile.interests.slice(0, 4).map((interest) => (
+            <span key={interest} className="px-2.5 py-0.5 rounded-full bg-rose-50 border border-rose-200 text-rose-600 text-xs font-medium">
               {interest}
             </span>
           ))}
         </div>
       </div>
 
-      {/* Wallet address & tx state */}
-      <div className="absolute bottom-3 left-5 right-5 flex items-center justify-between">
-        <span className="text-[10px] text-gray-600 font-mono truncate max-w-[160px]">
-          {profile.address.slice(0, 8)}…{profile.address.slice(-6)}
-        </span>
-        {txPending && (
-          <div className="flex items-center gap-1.5 text-xs text-yellow-400 animate-pulse">
-            <div className="w-1.5 h-1.5 rounded-full bg-yellow-400 animate-ping" />
-            tx pending…
-          </div>
-        )}
-      </div>
-
       {/* Action buttons */}
-      <div className="absolute -bottom-14 left-1/2 -translate-x-1/2 flex gap-5">
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-5">
         <button
           onClick={() => settle(false)}
           disabled={txPending || !!swipeResult}
-          className="w-14 h-14 rounded-full bg-white border-2 border-rose-500/60 flex items-center justify-center text-rose-400 text-xl hover:bg-rose-500/10 hover:scale-110 transition-all disabled:opacity-40"
-          title="Nope"
+          className="w-14 h-14 rounded-full bg-white shadow-lg border-2 border-rose-400/50 flex items-center justify-center text-rose-500 text-2xl hover:bg-rose-50 hover:scale-110 transition-all disabled:opacity-40"
         >✕</button>
         <button
           onClick={() => settle(true)}
           disabled={txPending || !!swipeResult}
-          className="w-14 h-14 rounded-full bg-white border-2 border-emerald-500/60 flex items-center justify-center text-emerald-400 text-xl hover:bg-emerald-500/10 hover:scale-110 transition-all disabled:opacity-40"
-          title="Like"
+          className="w-14 h-14 rounded-full bg-white shadow-lg border-2 border-emerald-400/50 flex items-center justify-center text-emerald-500 text-2xl hover:bg-emerald-50 hover:scale-110 transition-all disabled:opacity-40"
         >♥</button>
       </div>
     </div>
   );
 }
-
-
