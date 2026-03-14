@@ -72,8 +72,8 @@ The repository contains:
 
 ## 🎥 Demo Video
 
-> **[▶ Watch the Demo on YouTube](https://youtu.be/PLACEHOLDER_DEMO_LINK)**  
-> *(Replace this URL with your actual demo recording link before final submission)*
+> **[▶ Watch the Demo on YouTube](https://youtu.be/8_Tz6OEL0Ws)**  
+> *(Demo recording added for final submission)*
 
 **Demo should cover:**
 1. Connecting MetaMask to Hela Testnet

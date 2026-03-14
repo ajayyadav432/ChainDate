@@ -15,8 +15,8 @@
 
 ## 🎥 Demo Video
 
-> **[▶ Watch the 5-minute Demo](https://youtu.be/PLACEHOLDER_DEMO_LINK)**  
-> *(Update this link with your YouTube/Loom recording before submission)*
+> **[▶ Watch the 5-minute Demo](https://youtu.be/8_Tz6OEL0Ws)**  
+> *(Updated with the live YouTube recording)*
 
 ---
 
