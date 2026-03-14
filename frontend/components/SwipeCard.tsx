@@ -2,7 +2,7 @@
 import React, { useState, useRef, useCallback } from "react";
 import { ethers } from "ethers";
 import { getDatingCoreContract } from "@/lib/contracts";
-import { generateMockProof, encodeProofForContract, validateProofLocally } from "@/lib/zk";
+import { generateMockProof, encodeProofForContract } from "@/lib/zk";
 import { useToast } from "@/context/ToastContext";
 
 export interface CardProfile {
@@ -67,15 +67,12 @@ export default function SwipeCard({ profile, myInterestIds, myAge, signer, onSwi
       setTxPending(true);
       try {
         const proof = await generateMockProof({ age: myAge, userInterests: myInterestIds, targetInterests: profile.interests_ids });
-        const validation = validateProofLocally(proof);
-        if (validation.valid) {
-          const { proofCalldata, signalsCalldata } = encodeProofForContract(proof);
-          const contract = getDatingCoreContract(signer);
-          showToast("⛓️ Confirming swipe on Hela Network…", "pending");
-          const tx = await contract.swipe(profile.address, liked, proofCalldata, signalsCalldata, { value: SWIPE_FEE });
-          await tx.wait();
-          showToast(`💜 You liked ${profile.name}! Waiting for match…`, "success");
-        }
+        const { proofCalldata, signalsCalldata } = encodeProofForContract(proof);
+        const contract = getDatingCoreContract(signer);
+        showToast("⛓️ Confirming swipe on Hela Network…", "pending");
+        const tx = await contract.swipe(profile.address, liked, proofCalldata, signalsCalldata, { value: SWIPE_FEE });
+        await tx.wait();
+        showToast(`💜 You liked ${profile.name}! Waiting for match…`, "success");
       } catch (err: any) {
         showToast(`Transaction failed: ${err.message?.slice(0, 60)}`, "error");
       } finally {
@@ -85,6 +82,7 @@ export default function SwipeCard({ profile, myInterestIds, myAge, signer, onSwi
 
     setTimeout(() => onSwipeDone(profile.address, liked), 400);
   }, [signer, myAge, myInterestIds, profile, onSwipeDone, showToast]);
+
 
 
   const onPointerUp = useCallback(() => {
