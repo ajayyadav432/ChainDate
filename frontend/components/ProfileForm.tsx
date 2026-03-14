@@ -23,6 +23,7 @@ export default function ProfileForm({ signer, address, onRegistered }: ProfileFo
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
   const [age, setAge] = useState(18);
+  const [gender, setGender] = useState<"Man" | "Woman" | "Non-binary" | "">("");
   const [selectedInterests, setSelectedInterests] = useState<number[]>([]);
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState<"idle" | "encrypt" | "zk" | "tx" | "done">("idle");
@@ -38,8 +39,8 @@ export default function ProfileForm({ signer, address, onRegistered }: ProfileFo
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!name || !bio || selectedInterests.length === 0) {
-      setError("Please fill all fields and select at least one interest.");
+    if (!name || !bio || !gender || selectedInterests.length === 0) {
+      setError("Please fill all fields, select a gender, and pick at least one interest.");
       return;
     }
     setError(null);
@@ -113,6 +114,25 @@ export default function ProfileForm({ signer, address, onRegistered }: ProfileFo
           className="bg-white border border-gray-300 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:border-rose-500 transition w-28"
         />
         <span className="text-[10px] text-gray-600">Proven ≥18 via ZK proof — never stored plaintext</span>
+      </div>
+
+      {/* Gender */}
+      <div className="flex flex-col gap-2">
+        <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Gender</label>
+        <div className="flex gap-2 flex-wrap">
+          {(["Man", "Woman", "Non-binary"] as const).map(g => (
+            <button
+              key={g} type="button" onClick={() => setGender(g)}
+              className={`px-5 py-2.5 rounded-2xl text-sm font-semibold border-2 transition-all ${
+                gender === g
+                  ? "bg-rose-500 border-rose-500 text-white shadow-md shadow-rose-200"
+                  : "bg-white border-gray-200 text-gray-500 hover:border-rose-400 hover:text-rose-500"
+              }`}
+            >
+              {g === "Man" ? "👨 Man" : g === "Woman" ? "👩 Woman" : "🌈 Non-binary"}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="flex flex-col gap-2">
