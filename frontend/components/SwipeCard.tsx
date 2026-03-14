@@ -109,7 +109,7 @@ export default function SwipeCard({ profile, myInterestIds, myAge, signer, onSwi
       className="absolute inset-0 rounded-3xl overflow-hidden shadow-2xl shadow-black/30 bg-white border border-rose-100 select-none"
     >
       {/* Profile photo */}
-      <div className="relative h-[60%] overflow-hidden">
+      <div className="relative h-[65%] overflow-hidden">
         <img src={profile.photoUrl} alt={profile.name} className="w-full h-full object-cover" draggable={false} />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
@@ -134,36 +134,23 @@ export default function SwipeCard({ profile, myInterestIds, myAge, signer, onSwi
         )}
       </div>
 
-      {/* Profile info */}
-      <div className="p-4 flex flex-col gap-2">
+      {/* Profile info — fills all remaining space */}
+      <div className="p-4 flex flex-col gap-2 flex-1">
         <div className="flex items-baseline gap-2">
           <h2 className="text-xl font-bold text-gray-900">{profile.name}</h2>
           <span className="text-base text-gray-500">{profile.age}</span>
           <span className="ml-auto text-[10px] text-gray-400 font-mono">{profile.address.slice(0, 6)}…{profile.address.slice(-4)}</span>
         </div>
-        <p className="text-sm text-gray-600 line-clamp-2 leading-relaxed">{profile.bio}</p>
-        <div className="flex flex-wrap gap-1.5 mt-1">
-          {profile.interests.slice(0, 4).map((interest) => (
+        <p className="text-sm text-gray-600 line-clamp-3 leading-relaxed">{profile.bio}</p>
+        <div className="flex flex-wrap gap-1.5 mt-auto pt-2">
+          {profile.interests.slice(0, 6).map((interest) => (
             <span key={interest} className="px-2.5 py-0.5 rounded-full bg-rose-50 border border-rose-200 text-rose-600 text-xs font-medium">
               {interest}
             </span>
           ))}
         </div>
       </div>
-
-      {/* Action buttons */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-5">
-        <button
-          onClick={() => settle(false)}
-          disabled={txPending || !!swipeResult}
-          className="w-14 h-14 rounded-full bg-white shadow-lg border-2 border-rose-400/50 flex items-center justify-center text-rose-500 text-2xl hover:bg-rose-50 hover:scale-110 transition-all disabled:opacity-40"
-        >✕</button>
-        <button
-          onClick={() => settle(true)}
-          disabled={txPending || !!swipeResult}
-          className="w-14 h-14 rounded-full bg-white shadow-lg border-2 border-emerald-400/50 flex items-center justify-center text-emerald-500 text-2xl hover:bg-emerald-50 hover:scale-110 transition-all disabled:opacity-40"
-        >♥</button>
-      </div>
     </div>
   );
 }
+
