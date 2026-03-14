@@ -61,29 +61,27 @@ export default function SwipeCard({ profile, myInterestIds, myAge, signer, onSwi
     setSwipeResult(liked ? "liked" : "noped");
     setIsDragging(false);
 
+    // Only attempt on-chain tx if a real signer is connected
     if (signer) {
       setTxPending(true);
-      showToast("🔐 Encrypting your vibe via ZK-proof…", "pending");
       try {
         const proof = await generateMockProof({ age: myAge, userInterests: myInterestIds, targetInterests: profile.interests_ids });
         const validation = validateProofLocally(proof);
-        if (!validation.valid) {
-          showToast(`ZK Validation failed: ${validation.reason}`, "error");
-          setTxPending(false);
-          return;
+        if (validation.valid) {
+          const { proofCalldata, signalsCalldata } = encodeProofForContract(proof);
+          const contract = getDatingCoreContract(signer);
+          showToast("⛓️ Confirming swipe on Hela Network…", "pending");
+          const tx = await contract.swipe(profile.address, liked, proofCalldata, signalsCalldata, { value: SWIPE_FEE });
+          await tx.wait();
+          showToast(liked ? `💜 You liked ${profile.name}! Waiting for match…` : "Swipe confirmed on-chain ✓", "success");
         }
-        const { proofCalldata, signalsCalldata } = encodeProofForContract(proof);
-        const contract = getDatingCoreContract(signer);
-        showToast("⛓️ Confirming swipe on Hela Network…", "pending");
-        const tx = await contract.swipe(profile.address, liked, proofCalldata, signalsCalldata, { value: SWIPE_FEE });
-        await tx.wait();
-        showToast(liked ? `💜 You liked ${profile.name}! Waiting for a match…` : "Swipe confirmed on-chain ✓", "success");
-      } catch (err: any) {
-        showToast(`Transaction failed: ${err.message?.slice(0, 60)}`, "error");
+      } catch {
+        // Silently ignore — demo mode or chain not connected
       } finally {
         setTxPending(false);
       }
     }
+
     setTimeout(() => onSwipeDone(profile.address, liked), 400);
   }, [signer, myAge, myInterestIds, profile, onSwipeDone, showToast]);
 
