@@ -3,11 +3,20 @@
 > **HackJKLU v5.0 · Hela Labs Track**  
 > A fully on-chain, ZK-private dating dApp. Swipe, match, and connect — without exposing your identity.
 
+[![HackJKLU v5.0](https://img.shields.io/badge/HackJKLU-v5.0-blueviolet?style=for-the-badge)](https://hackjklu.com)
+[![Hela Network](https://img.shields.io/badge/Hela_Network-Testnet-00d4ff?style=for-the-badge)](https://helachain.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+
 ## 🚀 Live App
 
 **[https://chain-date.vercel.app](https://chain-date.vercel.app)**
 
 > Connect MetaMask on **Hela Official Runtime Testnet** (Chain ID: 666888) to interact with the app.
+
+## 🎥 Demo Video
+
+> **[▶ Watch the 5-minute Demo](https://youtu.be/PLACEHOLDER_DEMO_LINK)**  
+> *(Update this link with your YouTube/Loom recording before submission)*
 
 ---
 
@@ -128,6 +137,28 @@ User                         ZKP Layer                    Smart Contract
 
 ---
 
+## 📋 Deployment Addresses (Hela Testnet — Chain ID: 666888)
+
+| Contract | Address | Explorer |
+|---|---|---|
+| `MockZKVerifier` | `0x88e3515B1925b1E19223E99758340C607baeD473` | [View ↗](https://testnet.helascan.io/address/0x88e3515B1925b1E19223E99758340C607baeD473) |
+| `DatingCore` | `0x7D722A548862AfC52d8FAec245876218c787d04F` | [View ↗](https://testnet.helascan.io/address/0x7D722A548862AfC52d8FAec245876218c787d04F) |
+| `EscrowContent` | `0xf6E635A4400a3faac846D955Bb5d25A69A2FaD0C` | [View ↗](https://testnet.helascan.io/address/0xf6E635A4400a3faac846D955Bb5d25A69A2FaD0C) |
+
+**Deployer:** `0x84d512aD93EA1E954a4A74C5DdE03D4a254Cdc7B`
+
+---
+
+## 🔗 Example Transaction Hashes
+
+| # | Description | Transaction |
+|---|---|---|
+| 1 | `MockZKVerifier` deploy | [`0xc41478b5...`](https://testnet.helascan.io/tx/0xc41478b51ddbdf4b15307285e6aeffd47247e4a7a906c4b9ae5ef38c47953c98) |
+| 2 | `DatingCore` deploy | [`0x0bde33d7...`](https://testnet.helascan.io/tx/0x0bde33d71c88c8113b1d5c16f04cf565436d34f41c2a41820f39ce389b9bcb32) |
+| 3 | `EscrowContent` deploy | [`0xf15cfb6d...`](https://testnet.helascan.io/tx/0xf15cfb6d0fea189a0e5f6820e37c8e65ceec0e1128d8a20a06b07d0a8f64352e) |
+
+---
+
 ## Hela Network Configuration
 
 | Config | Value |
@@ -135,7 +166,7 @@ User                         ZKP Layer                    Smart Contract
 | Network Name | Hela Testnet |
 | Chain ID | 666888 |
 | RPC URL | `https://testnet-rpc.helachain.com` |
-| Explorer | `https://testnet-blockscout.helachain.com` |
+| Explorer | `https://testnet.helascan.io` |
 | Currency | HELA |
 
 ---
